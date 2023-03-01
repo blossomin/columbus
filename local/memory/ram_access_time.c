@@ -66,7 +66,7 @@ int main()
     unsigned long rand;
     uint64_t src = 100;
 
-    fptr = fopen("time_dram", "w");
+    fptr = fopen("time_dram0302", "w");
     fprintf(fptr,"Time\n");
     for(int trials = 0; trials<1000; trials++)
     {
@@ -83,13 +83,13 @@ int main()
     }
     fclose(fptr);
 
-    fptr = fopen("time_caches", "w");
+    fptr = fopen("time_caches0302", "w");
     fprintf(fptr,"Time\n");
-    for(int trials = 0; trials<10000; trials++)
+    for(int trials = 0; trials<1000; trials++)
     {
         rdtsc();
         for(int i = 0; i < 10; i++) {
-            rand = rand_xorshf96() % 8;
+            rand = rand_xorshf96() % 2;
             memcpy(dummy_buffer + rand, &src, sizeof(uint64_t));
         }
         rdtsc1();

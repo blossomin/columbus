@@ -1,4 +1,4 @@
-CC=g++
+CC=gcc
 CFLAGS=-I.
 DEPS = 
 OBJ = 
@@ -6,17 +6,17 @@ OBJ =
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-all: thrasher sampler
+all: ram_access
 
 # g++ -o thrasher local.cpp -I. -DTHRASHER
-thrasher: local.cpp
-	$(CC) -o $@ $^ $(CFLAGS) -DTHRASHER
+ram_access: ram_access_time.c
+	$(CC) -o $@ $^ $(CFLAGS) 
 	
 # g++ -o sampler local.cpp -I. -DSAMPLER
-sampler: local.cpp
-	$(CC) -o $@ $^ $(CFLAGS) -DSAMPLER
+# sampler: local.cpp
+# 	$(CC) -o $@ $^ $(CFLAGS) -DSAMPLER
 
 .PHONY: clean
 
 clean:
-	rm -r thrasher sampler
+	rm -r ram_access

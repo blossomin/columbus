@@ -19,12 +19,12 @@ make clean
 make
 
 # Run thrashers/samplers
-# taskset 0x1 ./thrasher 1 &
-# PIDS+=($!)
+taskset 0x1 ./thrasher 1 &
+PIDS+=($!)
 # taskset 0x2 ./thrasher 2 &
 # PIDS+=($!)
-taskset 0x4 ./sampler 1 &
-PIDS+=($!)
+# taskset 0x4 ./sampler 1 &
+# PIDS+=($!)
 sleep 10
 taskset 0x8 ./sampler 2 &
 PIDS+=($!)

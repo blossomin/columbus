@@ -14,7 +14,11 @@
 /* Rdtsc blocks for time measurements */
 unsigned cycles_low, cycles_high, cycles_low1, cycles_high1;
 
-static __inline__ unsigned long long rdtsc(void)
+// log file;
+FILE *fp = NULL;
+char* logfile = "./log.txt";
+
+static __inline__ void rdtsc(void)
 {
     __asm__ __volatile__ ("RDTSC\n\t"
             "mov %%edx, %0\n\t"
@@ -22,7 +26,7 @@ static __inline__ unsigned long long rdtsc(void)
             "%rax", "rbx", "rcx", "rdx");
 }
 
-static __inline__ unsigned long long rdtsc1(void)
+static __inline__ void rdtsc1(void)
 {
     __asm__ __volatile__ ("RDTSC\n\t"
             "mov %%edx, %0\n\t"
@@ -88,6 +92,7 @@ int read_bit(uint32_t* addr, uint64_t* samples_buf)
         sofar = now - begin;
         if (sofar + next + tail >= BIT_INTERVAL)
             break;
+        printf("sofar:%ld ; next time:%ld\n", sofar, next);
 
         // Wait until next sample
         poll_wait(next * SAMPLING_INTERVAL);
@@ -155,6 +160,8 @@ int main(int argc, char** argv)
     const std::string none = "none";
     std::string role;
     std::string role_id("");
+
+    
     
     uint64_t start, end, total_cycles_spent, *samples;
     int *arr;

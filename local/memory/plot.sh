@@ -8,6 +8,6 @@
 python plot.py -z cdf -yc "Time" -nt 1 \
     -d time_caches -l "Mostly caches"  \
     -d time_dram   -l "Mostly DRAM"  \
-    -o access_times.png -of png -nm
-display access_times.png &
+    -o access_times_copy.png -of png -nm
+# display access_times0301.png &
 
