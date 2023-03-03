@@ -224,17 +224,17 @@ int read_bit(uint32_t* addr, microseconds release_time_mus, bool calibrate, int 
         printf("Baseline sample: Size- %d, Mean- %lu\n", base_sample.size, base_sample.mean);
     }
 
-    bool write_to_file = true;                                   /** COMMENT OUT IN REAL RUNS **/       
-    if (write_to_file) {
-        char name[100];
-        sprintf(name, calibrate ? "data/results_base_%d_%d_%d" : "data/results_%d_%d_%d", id, phase, round);
-        FILE *fp = fopen(name, "w");
-            fprintf(fp, "Cycles\n");
-        for (i = 0; i < count; i++) {
-            fprintf(fp, "%lu\n", samples[i]);
-        }
-        fclose(fp);
-    }
+    // bool write_to_file = true;                                   /** COMMENT OUT IN REAL RUNS **/       
+    // if (write_to_file) {
+    //     char name[100];
+    //     sprintf(name, calibrate ? "data/results_base_%d_%d_%d" : "data/results_%d_%d_%d", id, phase, round);
+    //     FILE *fp = fopen(name, "w");
+    //         fprintf(fp, "Cycles\n");
+    //     for (i = 0; i < count; i++) {
+    //         fprintf(fp, "%lu\n", samples[i]);
+    //     }
+    //     fclose(fp);
+    // }
 
     *pvalue = welsch_ttest_pvalue(base_sample.mean, base_sample.variance, base_sample.size, 
                 last_sample.mean, last_sample.variance, last_sample.size);
@@ -416,8 +416,8 @@ int main(int argc, char** argv)
     * lambdas sample the membus at the same time resulting in membus contention 
     * even if none of the lambdas are actually thrashing 
     * NOTE: Purely time-based seed will backfire for applications that start together */
-    unsigned int seed = std::time(nullptr) ^ (getpid()<<16 ^ (id << 16));
-    // unsigned int seed = good_seed(id);
+    // unsigned int seed = std::time(nullptr) ^ (getpid()<<16 ^ (id << 16));
+    unsigned int seed = good_seed(id);
     std::srand(seed);
 
     /* Check clock precision on the system is at least micro-seconds (TODO: Does this give real precision?) */

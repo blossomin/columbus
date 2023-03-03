@@ -27,10 +27,10 @@ taskset 0x1 ./lambda 101 ${secs_since_epoch} &
 PIDS+=($!)
 taskset 0x2 ./lambda 303 ${secs_since_epoch} &
 PIDS+=($!)
-taskset 0x4 ./lambda 510 ${secs_since_epoch} &
-PIDS+=($!)
-taskset 0x8 ./lambda 950 ${secs_since_epoch} &
-PIDS+=($!)
+# taskset 0x4 ./lambda 510 ${secs_since_epoch} &
+# PIDS+=($!)
+# taskset 0x8 ./lambda 950 ${secs_since_epoch} &
+# PIDS+=($!)
 
 read -p "Press [enter] to quit\n"
 ctrl_c_handler

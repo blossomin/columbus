@@ -95,16 +95,17 @@ int read_bit(uint32_t* addr, uint64_t* samples_buf)
 
     // Make something out of collected samples
     int j, locked = 0;
-    printf("samples (%d): ", i);
+    
     for (j = 0; j < i; j++)
     {   
         // printf("%lu ", samples_buf[j]);
         // TODO: Replace this by a statistical diff test
         // For now, take latency > 1000 as contention and more than half as one bit
-        if (samples_buf[j] > 1000)  locked++; 
+        if (samples_buf[j] > 5020)  locked++; 
     }
+    // printf("samples (%d): ", i);
     result = 2 * locked >= i;
-    printf("%d\n", result);
+    printf("samples:(%d), locked:%d, and result:%d\n", i, locked, result);
         
     rdtsc();
     now = ( ((uint64_t)cycles_high << 32) | cycles_low );
@@ -199,18 +200,21 @@ int main(int argc, char** argv)
 #ifdef THRASHER
     /* Continuously hit the address with atomic operations */
     role = thrasher + role_id;
+    int cnt = 0;
     while(1)
     {   
         // /* atomic sum of cacheline boundary */
         // __atomic_fetch_add(addr, 1, __ATOMIC_SEQ_CST);
-        write_bit(addr, true);
+        cnt += 1;
+        // printf("thrasher(%s): %d\n", role.c_str(), cnt);
+        write_bit(addr, false);
         write_bit(addr, false);
         write_bit(addr, true);
         write_bit(addr, true);
+        write_bit(addr, true);
+        write_bit(addr, true);
+        write_bit(addr, true);
         write_bit(addr, false);
-        write_bit(addr, true);
-        write_bit(addr, true);
-        write_bit(addr, true);
         write_bit(addr, false);
     }
 
@@ -274,7 +278,9 @@ int main(int argc, char** argv)
 
         //     //break;
         // }
-        read_bit(addr, samples);
+        int res = read_bit(addr, samples);
+        // fprintf(fp, "%d\n", res);
+        // printf("hello !\n");
     }
 
     fclose(fp);
